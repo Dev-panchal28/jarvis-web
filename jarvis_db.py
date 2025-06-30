@@ -41,7 +41,7 @@ def init_db():
                 id TEXT PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL CHECK (email ~* r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+                email TEXT UNIQUE NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'),
                 created_at TIMESTAMP NOT NULL,
                 is_admin BOOLEAN DEFAULT FALSE
             )
