@@ -15,10 +15,9 @@ from jarvis_db import (
 )
 from datetime import timedelta
 from dotenv import dotenv_values
+import os
 
-# === Load environment variables ===
-env = dotenv_values(".env")
-SECRET_KEY = env.get("FLASK_SECRET")
+SECRET_KEY = os.environ.get("FLASK_SECRET")
 
 # === Flask App Setup ===
 app = Flask(__name__)

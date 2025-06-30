@@ -18,18 +18,17 @@ from jarvis_db import get_user_by_name
 from Backend.email_sender import send_otp_email
 
 # === Load .env Variables ===
-env_vars = dotenv_values(".env")
 DB_PARAMS = {
-    "dbname": env_vars.get("PG_DB"),
-    "user": env_vars.get("PG_USER"),
-    "password": env_vars.get("PG_PASS"),
-    "host": env_vars.get("PG_HOST"),
-    "port": env_vars.get("PG_PORT", "5432")
+    "dbname": os.environ.get("PG_DB"),
+    "user": os.environ.get("PG_USER"),
+    "password": os.environ.get("PG_PASS"),
+    "host": os.environ.get("PG_HOST"),
+    "port": os.environ.get("PG_PORT", "5432")
 }
 
-ADMIN_USERNAME = env_vars.get("ADMIN_USERNAME")
-ADMIN_PASSWORD = env_vars.get("ADMIN_PASSWORD")
-ADMIN_EMAIL = env_vars.get("ADMIN_EMAIL")
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL")
 
 # ============================================
 # DB Utilities

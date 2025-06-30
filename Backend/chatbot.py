@@ -8,16 +8,16 @@ import os
 import psycopg2
 
 # === Load Environment Variables from .env ===
-env = dotenv_values(".env")
 
-Assistantname = env.get("Assistantname", "Jarvis")
-GroqAPIKey = env.get("GroqAPIKey")
+Assistantname = os.environ.get("ASSISTANTNAME", "Jarvis")
+GroqAPIKey = os.environ.get("GROQ_API_KEY")
 
-PG_DB = env.get("PG_DB")
-PG_USER = env.get("PG_USER")
-PG_PASS = env.get("PG_PASS")
-PG_HOST = env.get("PG_HOST")
-PG_PORT = env.get("PG_PORT", "5432")
+PG_DB = os.environ.get("PG_DB")
+PG_USER = os.environ.get("PG_USER")
+PG_PASS = os.environ.get("PG_PASS")
+PG_HOST = os.environ.get("PG_HOST")
+PG_PORT = os.environ.get("PG_PORT", "5432")
+
 
 # === Initialize Groq Client ===
 client = Groq(api_key=GroqAPIKey)

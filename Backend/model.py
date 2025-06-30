@@ -4,8 +4,7 @@ import cohere
 from dotenv import dotenv_values
 
 # === Load API Key from .env ===
-env_vars = dotenv_values(".env")
-CohereAPIKey = env_vars.get("CohereAPIKey")
+CohereAPIKey = os.environ.get("CohereAPIKey")
 
 # === Raise error if not set ===
 if not CohereAPIKey:

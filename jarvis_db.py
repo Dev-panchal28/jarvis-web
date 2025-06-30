@@ -5,14 +5,14 @@ import os
 from dotenv import dotenv_values
 
 # === Load PostgreSQL Configuration from .env ===
-env_vars = dotenv_values(".env")
+
 
 DB_CONFIG = {
-    "dbname": env_vars.get("PG_DB", "jarvis"),
-    "user": env_vars.get("PG_USER", "postgres"),
-    "password": env_vars.get("PG_PASS", ""),
-    "host": env_vars.get("PG_HOST", "localhost"),
-    "port": env_vars.get("PG_PORT", "5432")
+    "dbname": os.environ.get("PG_DB", "jarvis"),
+    "user": os.environ.get("PG_USER", "postgres"),
+    "password": os.environ.get("PG_PASS", ""),
+    "host": os.environ.get("PG_HOST", "localhost"),
+    "port": os.environ.get("PG_PORT", "5432")
 }
 
 def get_conn():
@@ -41,7 +41,7 @@ def init_db():
                 id TEXT PRIMARY KEY,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+                email TEXT UNIQUE NOT NULL CHECK (email ~* r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
                 created_at TIMESTAMP NOT NULL,
                 is_admin BOOLEAN DEFAULT FALSE
             )

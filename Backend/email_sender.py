@@ -2,11 +2,11 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import dotenv_values
-
+import os
 # Load environment variables
-env = dotenv_values(".env")
-EMAIL_ADDRESS = env.get("EMAIL_ADDRESS")
-EMAIL_PASSWORD = env.get("EMAIL_PASSWORD")
+
+EMAIL_ADDRESS = os.environ.get("EMAIL_ADDRESS")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 
 def send_otp_email(to_email, otp_code):
     subject = "Your OTP Code for Password Reset"

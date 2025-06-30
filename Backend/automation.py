@@ -16,8 +16,7 @@ from jarvis_db import get_user_by_name, save_user_file
 # === Load environment variables ===
 env = dotenv_values(".env")
 
-GroqAPIKey = env.get("GroqAPIKey")
-
+GroqAPIKey = os.environ.get("GROQ_API_KEY")
 
 # === PostgreSQL-backed AI Content Writer ===
 def WriteContent(prompt):
