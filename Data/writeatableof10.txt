@@ -1,0 +1,16 @@
+Here is a table with 10 rows:
+
+| S.No | Name | Age | Occupation |
+| --- | --- | --- | --- |
+| 1 | John | 25 | Engineer |
+| 2 | Emma | 32 | Doctor |
+| 3 | Michael | 40 | Teacher |
+| 4 | Sarah | 28 | Lawyer |
+| 5 | David | 35 | Businessman |
+| 6 | Rachel | 22 | Student |
+| 7 | Kevin | 29 | Software Developer |
+| 8 | Olivia | 38 | Architect |
+| 9 | William | 45 | Scientist |
+| 10 | Ava | 26 | Journalist |
+
+Let me know if you need any modifications or a specific type of table!

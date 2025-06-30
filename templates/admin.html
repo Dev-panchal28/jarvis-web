@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Jarvis AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+
+  <!-- Top Bar -->
+  <div class="bg-gray-800 px-6 py-4 flex justify-between items-center shadow">
+    <h1 class="text-2xl font-bold text-blue-400">JARVIS AI - Admin Dashboard</h1>
+    <div class="flex gap-2">
+      <button onclick="logoutAdmin()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Logout</button>
+      <button onclick="location.href='/'" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Back to App</button>
+    </div>
+  </div>
+
+  <!-- User Table -->
+  <div class="p-6 overflow-x-auto">
+    <h2 class="text-xl font-semibold mb-4">Registered Users</h2>
+
+    <div id="loading" class="text-gray-400 text-center mb-4">Loading users...</div>
+
+    <table class="w-full table-auto border-collapse text-sm sm:text-base">
+      <thead>
+        <tr class="bg-gray-700 text-left">
+          <th class="p-2 border border-gray-600">User ID</th>
+          <th class="p-2 border border-gray-600">Username</th>
+          <th class="p-2 border border-gray-600">Email</th>
+          <th class="p-2 border border-gray-600">Action</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        <!-- Dynamically filled via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Toast Message -->
+  <div id="toast" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded shadow hidden z-50">
+    <span id="toastMessage"></span>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function showToast(msg, duration = 3000) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), duration);
+    }
+
+    async function fetchUsers() {
+      try {
+        const res = await fetch('/admin/users');
+        const data = await res.json();
+
+        if (!res.ok || !data.users) throw new Error(data.message || "Unauthorized or server error");
+
+        const table = document.getElementById('userTableBody');
+        const loading = document.getElementById('loading');
+        loading.style.display = 'none';
+        table.innerHTML = '';
+
+        if (data.users.length === 0) {
+          table.innerHTML = `<tr><td colspan="4" class="text-center text-gray-400 py-4">No users found.</td></tr>`;
+          return;
+        }
+
+        data.users.forEach(user => {
+          const safeUsername = user.username.replace(/'/g, "\\'");
+
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-gray-800';
+          row.innerHTML = `
+            <td class="border border-gray-700 px-2 py-1">${user.id}</td>
+            <td class="border border-gray-700 px-2 py-1">${user.username}</td>
+            <td class="border border-gray-700 px-2 py-1">${user.email}</td>
+            <td class="border border-gray-700 px-2 py-1">
+              <button onclick="deleteUser('${safeUsername}')" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
+                Delete
+              </button>
+            </td>
+          `;
+          table.appendChild(row);
+        });
+      } catch (err) {
+        showToast('⚠️ Failed to load users. Please log in as admin again.');
+        window.location.href = '/admin/login';
+      }
+    }
+
+    async function deleteUser(username) {
+      if (!confirm(`Are you sure you want to delete ${username}?`)) return;
+
+      try {
+        const res = await fetch('/admin/delete_user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username })
+        });
+
+        const data = await res.json();
+        showToast(data.message || 'User deleted.');
+        fetchUsers();
+      } catch {
+        showToast('❌ Error deleting user.');
+      }
+    }
+
+    async function logoutAdmin() {
+      try {
+        const res = await fetch('/admin/logout', { method: 'POST' });
+        const data = await res.json();
+        showToast(data.message || "Logged out.");
+        setTimeout(() => window.location.href = '/admin/login', 1500);
+      } catch {
+        showToast('❌ Error logging out.');
+      }
+    }
+
+    fetchUsers();
+  </script>
+
+</body>
+</html>

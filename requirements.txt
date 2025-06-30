@@ -1,0 +1,11 @@
+psycopg2 
+pygame 
+edge-tts 
+dotenv
+flask
+groq
+cohere
+googlesearch-python
+bcrypt
+gunicorn
+

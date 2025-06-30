@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Virtual Assistant</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- === App Wrapper === -->
+  <div class="app-container">
+
+    <!-- === Top Bar === -->
+    <header class="top-bar">
+      <div class="title">Virtual Assistant</div>
+
+      <!-- User Initial Badge -->
+      <div id="user-badge" class="user-badge" aria-label="Logged-in user badge" style="display: none;"></div>
+
+      <!-- Settings -->
+      <div class="settings-icon">
+        <img src="/static/images/settings.png" id="settings-toggle" alt="Settings icon" />
+        <div id="settings-menu" class="settings-menu hidden" aria-label="Settings menu">
+          <div class="settings-item" onclick="toggleAudio()">🔊 Audio: <span id="audio-state">Unmute</span></div>
+          <div class="settings-divider"></div>
+          <div class="settings-item" onclick="signup()">📝 Signup</div>
+          <div class="settings-item" onclick="login()">🔐 Login</div>
+          <div class="settings-item" onclick="logout()">🚪 Logout</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- === Chat Section === -->
+    <main class="chat-section">
+      <div id="chat-box" class="chat-box" aria-live="polite">
+        {% if chat_history %}
+          {% for msg in chat_history %}
+            <div class="user-message">
+              <b>You:</b> {{ msg.message | e }}
+              <div class="timestamp">{{ msg.timestamp }}</div>
+            </div>
+            <div class="bot-message">
+              <b>Jarvis:</b> {{ msg.response | safe }}
+              <div class="timestamp">{{ msg.timestamp }}</div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="no-chat centered-fade">🧠 No previous chats found. Start a new conversation!</p>
+        {% endif %}
+      </div>
+
+      <!-- Input -->
+      <div class="chat-input">
+        <input type="text" id="user-input" placeholder="Type a message..." aria-label="User input" autocomplete="off" />
+        <button onclick="sendMessage()" aria-label="Send message">Send</button>
+      </div>
+    </main>
+
+    <!-- === Mic Section === -->
+    <footer class="mic-section">
+      <button id="mic-toggle" aria-label="Toggle microphone">
+        <img src="/static/images/mic_on.png" id="mic-icon" alt="Microphone icon" />
+      </button>
+      <p id="mic-status">Mic is Off</p>
+    </footer>
+  </div>
+
+  <!-- === Inline Signup Form === -->
+  <div id="signup-form" class="auth-form hidden">
+    <h2>📝 Signup</h2>
+    <input type="text" id="signup-username" placeholder="Username" required />
+    <input type="email" id="signup-email" placeholder="Email" required />
+    <input type="password" id="signup-password" placeholder="Password" required />
+    <button onclick="submitSignup()">Signup</button>
+    <button onclick="hideForms()">Cancel</button>
+  </div>
+
+  <!-- === Inline Login Form === -->
+  <div id="login-form" class="auth-form hidden">
+    <h2>🔐 Login</h2>
+    <input type="text" id="login-identifier" placeholder="Username or Email" required />
+    <input type="password" id="login-password" placeholder="Password" required />
+    
+    <!-- Forgot Password Link -->
+    <div class="forgot-password-container">
+        <a href="#" id="forgot-password-link" onclick="showForgotPasswordForm(event)">Forgot Password?</a>
+    </div>
+
+    <button onclick="submitLogin()">Login</button>
+    <button onclick="hideForms()">Cancel</button>
+  </div>
+  <!-- === Forgot Password Step 1: Enter Username or Phone === -->
+  <div id="forgot-password-form" class="auth-form hidden">
+    <h2>🔑 Forgot Password</h2>
+    <input type="text" id="fp-identifier" placeholder="Username" required />
+    <button onclick="submitForgotPassword()">Send OTP</button>
+    <button onclick="hideForms()">Cancel</button>
+  </div>
+
+    <!-- === Forgot Password Step 2: Enter OTP === -->
+  <div id="otp-verification-form" class="auth-form hidden">
+    <h2>📩 Enter OTP</h2>
+    <input type="text" id="otp-input" placeholder="Enter OTP" maxlength="6" required />
+    <button onclick="submitOTP()">Verify OTP</button>
+    <button onclick="hideForms()">Cancel</button>
+  </div>
+
+    <!-- === Forgot Password Step 3: Reset Password === -->
+  <div id="reset-password-form" class="auth-form hidden">
+    <h2>🔒 Reset Password</h2>
+    <input type="password" id="new-password" placeholder="New Password" required />
+    <button onclick="submitNewPassword()">Reset Password</button>
+    <button onclick="hideForms()">Cancel</button>
+  </div>
+
+
+
+  <!-- === Modal for Feedback Messages === -->
+  <div id="messageModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p id="modalMessage"></p>
+    </div>
+  </div>
+
+  <!-- === JS Script === -->
+  <script src="/static/js/script.js"></script>
+</body>
+</html>
