@@ -42,7 +42,7 @@ micBtn?.addEventListener("click", () => {
 });
 
 function updateMicUI(on) {
-    micIcon.src = on ? "/static/images/mic_off.png" : "/static/images/mic_on.png";
+    micIcon.src = on ? "/static/images/Mic_off.png" : "/static/images/Mic_on.png";
     micStatus.textContent = on ? "Mic is On" : "Mic is Off";
 }
 
